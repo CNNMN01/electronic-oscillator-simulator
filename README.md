@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # electronic-oscillator-simulator
 A web-based electronic oscillator simulator with real-time waveform visualization and audio output
 =======
@@ -17,5 +16,4 @@ A fully functional web-based electronic oscillator simulator with real-time wave
 
 ## 🚀 Live Demo
 
-[Try it here!](https://yourusername.github.io/electronic-oscillator-simulator/)
->>>>>>> 8bdad80 (Initial commit: Professional oscilloscope simulator v2.0)
+[Try it here!](https://electronic-oscillator-simulator.netlify.app/)
