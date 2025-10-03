@@ -1,0 +1,17 @@
+# robots.txt for Oscilloscope Simulator
+
+User-agent: *
+Allow: /
+Disallow: /netlify/
+Disallow: /.git/
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://electronic-oscillator-simulator.netlify.app/sitemap.xml
+
+# Crawl delay (optional - helps prevent overload)
+Crawl-delay: 1
+
+# Block specific bots (optional)
+# User-agent: BadBot
+# Disallow: /

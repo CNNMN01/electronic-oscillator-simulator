@@ -1,0 +1,302 @@
+# ==================================================================
+# NETLIFY CONFIGURATION FILE
+# Production-ready settings with security headers
+# ==================================================================
+
+[build]
+  # Build command (not needed for static site, but included for completeness)
+  command = "echo 'No build step required'"
+  
+  # Publish directory
+  publish = "."
+  
+  # Functions directory (if you add serverless functions later)
+  functions = "netlify/functions"
+
+# ==================================================================
+# CUSTOM HEADERS FOR SECURITY
+# ==================================================================
+
+[[headers]]
+  # Apply to all pages
+  for = "/*"
+  
+  [headers.values]
+    # Security Headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Permissions Policy - Disable unnecessary features
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+    
+    # Content Security Policy - Allow Google AdSense
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 
+        https://pagead2.googlesyndication.com 
+        https://*.google.com 
+        https://*.googletagmanager.com 
+        https://adservice.google.com 
+        https://www.googletagservices.com;
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: https: http:;
+      font-src 'self' data:;
+      connect-src 'self' 
+        https://*.google.com 
+        https://*.doubleclick.net 
+        https://adservice.google.com;
+      frame-src 
+        https://googleads.g.doubleclick.net 
+        https://tpc.googlesyndication.com 
+        https://www.google.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    """
+    
+    # Strict Transport Security - Force HTTPS for 1 year
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    
+    # Feature Policy (for older browsers)
+    Feature-Policy = "geolocation 'none'; microphone 'none'; camera 'none'"
+
+# ==================================================================
+# HTML FILES - NO CACHE (Always Fresh)
+# ==================================================================
+
+[[headers]]
+  for = "/*.html"
+  
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+[[headers]]
+  for = "/index.html"
+  
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+# ==================================================================
+# STATIC ASSETS - AGGRESSIVE CACHING
+# ==================================================================
+
+# CSS and JavaScript - 1 week cache
+[[headers]]
+  for = "/*.css"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "/*.js"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+# Images - 1 month cache
+[[headers]]
+  for = "/*.jpg"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+[[headers]]
+  for = "/*.jpeg"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+[[headers]]
+  for = "/*.gif"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+[[headers]]
+  for = "/*.svg"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+[[headers]]
+  for = "/*.ico"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Fonts - 1 year cache
+[[headers]]
+  for = "/*.woff"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.woff2"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.ttf"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.otf"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/*.eot"
+  
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+# ==================================================================
+# REDIRECTS
+# ==================================================================
+
+# Redirect HTTP to HTTPS (handled automatically by Netlify)
+
+# Redirect www to non-www (optional - uncomment if needed)
+# [[redirects]]
+#   from = "https://www.yourdomain.com/*"
+#   to = "https://yourdomain.com/:splat"
+#   status = 301
+#   force = true
+
+# Redirect old URLs (examples)
+# [[redirects]]
+#   from = "/old-page"
+#   to = "/new-page"
+#   status = 301
+
+# SPA fallback (if you convert to SPA later)
+# [[redirects]]
+#   from = "/*"
+#   to = "/index.html"
+#   status = 200
+
+# ==================================================================
+# CUSTOM 404 PAGE (Optional)
+# ==================================================================
+
+# [[redirects]]
+#   from = "/*"
+#   to = "/404.html"
+#   status = 404
+
+# ==================================================================
+# ENVIRONMENT VARIABLES (Optional)
+# ==================================================================
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+# ==================================================================
+# PLUGINS (Optional but recommended)
+# ==================================================================
+
+# Optimize images automatically
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
+
+# Security headers checker
+# [[plugins]]
+#   package = "netlify-plugin-checklinks"
+
+# ==================================================================
+# FUNCTIONS CONFIGURATION (if you add serverless functions)
+# ==================================================================
+
+[functions]
+  directory = "netlify/functions"
+  # node_bundler = "esbuild"
+
+# ==================================================================
+# EDGE FUNCTIONS (Optional - for advanced use cases)
+# ==================================================================
+
+# [[edge_functions]]
+#   function = "add-header"
+#   path = "/*"
+
+# ==================================================================
+# DEV SERVER SETTINGS
+# ==================================================================
+
+[dev]
+  command = "echo 'Development server running'"
+  port = 8888
+  publish = "."
+  autoLaunch = true
+
+# ==================================================================
+# FORMS CONFIGURATION (if you add forms)
+# ==================================================================
+
+# [forms]
+#   spam_filter = true
+
+# ==================================================================
+# CONTEXT-SPECIFIC CONFIGURATIONS
+# ==================================================================
+
+# Production context
+[context.production]
+  command = "echo 'Production build'"
+  
+  [context.production.environment]
+    NODE_ENV = "production"
+
+# Deploy preview context
+[context.deploy-preview]
+  command = "echo 'Deploy preview'"
+  
+  [context.deploy-preview.environment]
+    NODE_ENV = "staging"
+
+# Branch deploy context
+[context.branch-deploy]
+  command = "echo 'Branch deploy'"
+  
+  [context.branch-deploy.environment]
+    NODE_ENV = "development"
+
+# ==================================================================
+# SPLIT TESTING (A/B Testing) - Optional
+# ==================================================================
+
+# [[split_tests]]
+#   branch_a = "main"
+#   branch_b = "experiment"
+#   percentage = 50
